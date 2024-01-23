@@ -225,6 +225,8 @@ export default class TableNode extends Node {
     let result = [];
 
     if (fields && fields.length) {
+      // 有数据的情况下，如果有空dom，则将其清除
+      container.children('.no-data').remove();
       fields.forEach((_field, index) => {
         let fieldDom = $('<div class="field"></div>');
         let _primaryKey = columns[0].key;
@@ -465,6 +467,17 @@ export default class TableNode extends Node {
         $(field.dom).remove();
       }
     });
+    // 如果所有的孩子都被删光了，那么赋给这个container一个空元素
+    const container = $(this.dom);
+    if (container.children().length <= 1) {
+      const _emptyContent = _.get(this.options, '_emptyContent');
+      const noDataTree = emptyDom({
+        content: _emptyContent,
+        width: this.options._emptyWidth
+      });
+      container.append(noDataTree);
+      this.height = $(container).outerHeight();
+    }
   }
   updateCheckedStatus(fields) {
     fields.forEach((field) => {

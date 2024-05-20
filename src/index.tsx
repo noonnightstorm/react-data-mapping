@@ -251,8 +251,8 @@ export default class DataMapping extends React.Component<ComProps, any> {
     if (this._isRendering) {
       this._isRendering.then(() => {
         _update();
+        this._isRendering = false;
       })
-      this._isRendering = false;
     } else {
       _update();
     }
